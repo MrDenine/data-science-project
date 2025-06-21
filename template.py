@@ -4,7 +4,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-proect_name = "data-science-project"
+proect_name = "data_science_project"
 
 list_of_files = [
     ".github/workflows/.gitkeep",
