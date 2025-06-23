@@ -4,8 +4,17 @@ from src.data_science_project.entity.config_entity import (
     DataIngestionConfig,
     DataTransformationConfig,
     DataValidationConfig,
+    ModelEvaluationConfig,
     ModelTrainerConfig,
 )
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
+MLFLOW_TRACKING_USERNAME = os.getenv("MLFLOW_TRACKING_USERNAME")
+MLFLOW_TRACKING_PASSWORD = os.getenv("MLFLOW_TRACKING_PASSWORD")
 
 
 class ConfigurationManager:
@@ -92,3 +101,34 @@ class ConfigurationManager:
         )
 
         return model_trainer_config
+
+    def __init__(
+        self,
+        config_file_path=CONFIG_FILE_PATH,
+        params_file_path=PARAMS_FILE_PATH,
+        schema_file_path=SCHEMA_FILE_PATH,
+    ):
+
+        self.config = read_yaml(config_file_path)
+        self.params = read_yaml(params_file_path)
+        self.schema = read_yaml(schema_file_path)
+
+        create_directories([self.config.artifacts_root])
+
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        config = self.config.model_evaluation
+        params = self.params.ElasticNet
+        schema = self.schema.TARGET_COLUMN
+
+        create_directories([config.root_dir])
+
+        model_evaluation_config = ModelEvaluationConfig(
+            root_dir=config.root_dir,
+            test_data_path=config.test_data_path,
+            model_path=config.model_path,
+            all_params=params,
+            metric_file_name=config.metric_file_name,
+            target_column=schema.name,
+            mlflow_uri=MLFLOW_TRACKING_URI,
+        )
+        return model_evaluation_config
