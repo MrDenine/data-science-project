@@ -11,6 +11,11 @@
 - Dagshub (Remote MLflow Tracking)
 - python-dotenv (Environment Variables)
 
+## Dataset
+
+The dataset used in this project can be found on Kaggle:
+[Wine Quality Dataset - Kaggle](https://www.kaggle.com/datasets/yasserh/wine-quality-dataset)
+
 ### Workflows--ML Pipeline
 
 1. Data Ingestion
